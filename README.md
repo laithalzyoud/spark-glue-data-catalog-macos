@@ -10,15 +10,23 @@ It was mostly inspired by awslabs' Github project [awslabs/aws-glue-data-catalog
 
 ### AWS credentials
 
-You must provide AWS credentials via environment variables in /conf/spark-env.sh for spark to be able to access AWS APIs: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`.
+You must provide AWS credentials via environment variables in `/conf/spark-env.sh` for spark to be able to access AWS APIs: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`.
 
 ## Dependencies
 
 To build spark with glue locally using the provided script, you should have the following installed:
 1. git -> `brew install git`
 2. wget -> `brew install wget`
-3. JDK8 -> https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html and don't forget to `export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home`
-4. gnu-sed -> `brew install gnu-sed`
+3. JDK8 -> https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html and don't forget to add `export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home` to your bash/zsh profile in `~/.bash_profile` or `~/.zprofile` and confirm with `java -version`
+4. Maven:
+  * `cd ~ && wget https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz && tar -xvf apache-maven-3.6.3-bin.tar.gz && sudo mv apache-maven-3.6.3 /opt/maven`
+  * Add the following to your bash/zsh profile in `~/.bash_profile` or `~/.zprofile`:
+    ``` 
+    export M2_HOME=/opt/maven
+    export PATH=$M2_HOME/bin:$PATH
+    ```
+  * Verify with `mvn -version`
+5. gnu-sed -> `brew install gnu-sed`
 
 ### Build spark-glue-data-catalog locally
 
