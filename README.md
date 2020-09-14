@@ -1,6 +1,6 @@
-# spark-glue-data-catalog
+# spark-glue-data-catalog-macos
 
-This project builds Apache Spark in way it is compatible with AWS Glue Data Catalog.
+This project builds Apache Spark in way it is compatible with AWS Glue Data Catalog on macOS.
 
 It was mostly inspired by awslabs' Github project [awslabs/aws-glue-data-catalog-client-for-apache-hive-metastore][1] and its various issues and user feedbacks.
 
@@ -10,84 +10,19 @@ It was mostly inspired by awslabs' Github project [awslabs/aws-glue-data-catalog
 
 ### AWS credentials
 
-You must provide AWS credentials via environment variables to the master/executor nodes 
-for spark to be able to access AWS APIs: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`. 
+You must provide AWS credentials via environment variables in /conf/spark-env.sh for spark to be able to access AWS APIs: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`.
 
-### IAM permissions
+## Dependencies
 
-Here is an exemple set of [Glue permissions](https://docs.aws.amazon.com/glue/latest/dg/api-permissions-reference.html) to allow Spark to access an hypothetic `db1.table1` table in Glue Data Catalog:
-
-```json
-{
-  "Effect": "Allow",
-  "Action": [
-    "glue:*Database*",
-    "glue:*Table*",
-    "glue:*Partition*"
-  ],
-  "Resource": [
-    "arn:aws:glue:us-west-2:123456789012:catalog",      
-
-    "arn:aws:glue:us-west-2:123456789012:database/db1",
-    "arn:aws:glue:us-west-2:123456789012:table/db1/table1",
-
-    "arn:aws:glue:eu-west-1:645543648911:database/default",
-    "arn:aws:glue:eu-west-1:645543648911:database/global_temp",
-    "arn:aws:glue:eu-west-1:645543648911:database/parquet"
-  ]
-}
-```
-
-Note the last 3 resources are mandatory for the the glue-compatible hive connector.
-
-Don't forget to also add S3 IAM permissions for Spark to be able to fetch table data!
-
-## Current release
-
-- 📄 [spark-2.4.5-bin-hadoop2.8-glue.tgz](https://github.com/tinyclues/spark-glue-data-catalog/releases/download/1.0/spark-2.4.5-bin-hadoop2.8-glue.tgz)
-  - Python 3.6
-  - Spark 2.4.5
-  - Hadoop 2.8.5
-  - Hive 1.2.1
-  - AWS SDK 1.11.682
-
-## Miscellaneous
+To build spark with glue locally using the provided script, you should have the following installed:
+1. git -> `brew install git`
+2. wget -> `brew install wget`
+3. JDK8 -> https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html and don't forget to `export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home`
+4. gnu-sed -> `brew install gnu-sed`
 
 ### Build spark-glue-data-catalog locally
 
-You need [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
-
-Just run `make build`. Spark bundle artifact is produced in `dist/` directory.
-
-### Use in Jupyter notebook
-
-To use this version of pyspark in Jupyter, you need to declare a new dedicated kernel.
-
-We suppose you installed Spark in `/opt` directory and symlinked it with `/opt/spark`.
-
-Create a `kernel.json` file somewhere with following content:
-
-```json
-{
-  "display_name": "PySpark",
-  "language": "python",
-  "argv": [
-    "/opt/conda/bin/python",
-    "-m",
-    "ipykernel",
-    "-f",
-    "{connection_file}"
-  ],
-  "env": {
-    "SPARK_HOME": "/opt/spark",
-    "PYTHONPATH": "/opt/spark/python/:/opt/spark/python/lib/py4j-0.10.7-src.zip",
-    "PYTHONSTARTUP": "/opt/spark/python/pyspark/shell.py",
-    "PYSPARK_PYTHON": "/opt/conda/bin/python"
-  }
-}
-```
-
-Then, run `jupyter kernelspec install {path to kernel.json's directory}`.
+To build spark with glue support run `./build-spark.sh`
 
 ## References
 
