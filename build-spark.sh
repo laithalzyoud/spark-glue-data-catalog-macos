@@ -24,7 +24,7 @@ cd ~/glue
 gsed -i '/<packaging>pom<\/packaging>/a <dependencies><dependency><groupId>org.apache.hadoop<\/groupId><artifactId>hadoop-common<\/artifactId><version>${hadoop.version}<\/version><scope>provided<\/scope><\/dependency><\/dependencies>' shims/pom.xml
 mvn clean package -DskipTests -pl -aws-glue-datacatalog-hive2-client
 
-BUILD SPARK
+# BUILD SPARK
 git clone https://github.com/apache/spark.git ~/spark
 cd ~/spark
 git checkout tags/v$SPARK_VERSION -b v$SPARK_VERSION
@@ -43,4 +43,4 @@ echo :quit | ./bin/spark-shell --conf spark.jars.packages=com.amazonaws:aws-java
 cp ~/.ivy2/jars/*.jar jars
 # Create archive
 DIRNAME=spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION%.*}-glue
-mv ~/spark/dist ./$DIRNAME
+mv ~/spark/dist $DIRNAME
