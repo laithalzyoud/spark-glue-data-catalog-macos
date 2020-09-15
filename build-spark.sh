@@ -37,10 +37,15 @@ mvn dependency:get -Dartifact=asm:asm:3.2
 mvn dependency:get -Dartifact=net.minidev:json-smart:1.3.1
 find ~/glue -name "*.jar" -exec cp {} jars \;
 # Copy configuration
-cp ../conf/* conf
+cp ~/spark-glue-data-catalog-macos/conf/* conf/
+
 # Copy AWS jars
 echo :quit | ./bin/spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk:$AWS_SDK_VERSION,org.apache.hadoop:hadoop-aws:$HADOOP_VERSION
 cp ~/.ivy2/jars/*.jar jars
+
+# Remove netty jars
+rm jars/netty*
+
 # Create archive
 DIRNAME=spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION%.*}-glue
 mv ~/spark/dist $DIRNAME
