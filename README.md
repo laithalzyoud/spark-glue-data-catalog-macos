@@ -25,6 +25,7 @@ To build spark with glue locally using the provided script, you should have the 
     export M2_HOME=/opt/maven
     export PATH=$M2_HOME/bin:$PATH
     ```
+  * `source ~/.bash_profile`
   * Verify with `mvn -version`
 5. gnu-sed -> `brew install gnu-sed`
 
